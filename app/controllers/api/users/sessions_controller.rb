@@ -1,4 +1,4 @@
-class Api::SessionsController < Api::ApiController
+class Api::User::SessionsController < Api::ApiController
 
   before_filter :authenticate_user!, :except => [:create]
 
@@ -20,4 +20,4 @@ class Api::SessionsController < Api::ApiController
   def invalid_login_attempt
     render :json=> {:success=>false, :message=>"Error with your login or password"}, :status=>401
   end
-
+end
