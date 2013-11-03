@@ -32,6 +32,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.datetime :locked_at
 
       t.string 	   :authentication_token, :null =>false, :default => ""
+      t.string 	   :uuid, :null =>false, :default => ""
+      t.string 	   :phone, :null =>false, :default => ""
       t.boolean    :sex, :null=>true
       t.date       :birthday, :null=>true
       t.string     :city, :null=>false, :defalut => ""

@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20131103075020) do
 
   create_table "apps", force: true do |t|
     t.string   "name"
+    t.string   "url"
     t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -58,6 +59,8 @@ ActiveRecord::Schema.define(version: 20131103075020) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "authentication_token",   default: "",   null: false
+    t.string   "uuid",                   default: "",   null: false
+    t.string   "phone",                  default: "",   null: false
     t.boolean  "sex"
     t.date     "birthday"
     t.string   "city",                                  null: false
