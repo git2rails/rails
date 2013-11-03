@@ -15,7 +15,7 @@ class Api::Users::RegistrationsController < Api::ApiController
   end
 
   def user_params
-    params.require(:user).permit(:name)
+    params.require(:user).permit(:name, :uuid, :phone)
   end
 
 end
