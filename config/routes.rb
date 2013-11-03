@@ -1,13 +1,12 @@
 RailsServer::Application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
   devise_for :users
-  ActiveAdmin.routes(self)
   namespace :api do
     devise_scope :user do
       post "users/sign_up", to: "users/registrations#create"
       post "users/sign_in", to: "users/sessions#create"
     end
+    post "profile/update"
+    
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
