@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   serialize :setting, JSON
   serialize :sns, JSON
+  has_many :posts
+  has_many :ratings
+  has_many :app_runtime_histories
 
   validates_uniqueness_of    :name,     :case_sensitive => false, :allow_blank => false, :if => :name_changed?
   validates_length_of :name, :within => 2..10, :allow_blank => false

@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  name: MyString
-  content: 
-  url: MyString
+  app_id: 
+  type: 
+  runtime: 1
+  user_id: 
 
 two:
-  name: MyString
-  content: 
-  url: MyString
+  app_id: 
+  type: 
+  runtime: 1
+  user_id: 

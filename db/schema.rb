@@ -11,12 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131103075020) do
+ActiveRecord::Schema.define(version: 20131105150041) do
+
+  create_table "app_runtime_histories", force: true do |t|
+    t.integer  "app_id"
+    t.string   "type"
+    t.integer  "runtime"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "app_runtime_histories", ["app_id"], name: "index_app_runtime_histories_on_app_id"
+  add_index "app_runtime_histories", ["user_id"], name: "index_app_runtime_histories_on_user_id"
 
   create_table "apps", force: true do |t|
     t.string   "name"
-    t.string   "url"
     t.text     "content"
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -37,7 +49,7 @@ ActiveRecord::Schema.define(version: 20131103075020) do
 
   create_table "posts", force: true do |t|
     t.integer  "app_id"
-    t.string   "content"
+    t.text     "content"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -45,6 +57,18 @@ ActiveRecord::Schema.define(version: 20131103075020) do
 
   add_index "posts", ["app_id"], name: "index_posts_on_app_id"
   add_index "posts", ["user_id"], name: "index_posts_on_user_id"
+
+  create_table "ratings", force: true do |t|
+    t.integer  "app_id"
+    t.float    "starts"
+    t.text     "comment"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ratings", ["app_id"], name: "index_ratings_on_app_id"
+  add_index "ratings", ["user_id"], name: "index_ratings_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "name",                                  null: false

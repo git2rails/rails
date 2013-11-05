@@ -1,8 +1,9 @@
-class CreatePosts < ActiveRecord::Migration
+class CreateRatings < ActiveRecord::Migration
   def change
-    create_table :posts do |t|
+    create_table :ratings do |t|
       t.references :app, index: true
-      t.text :content
+      t.float :starts
+      t.text :comment
       t.references :user, index: true
 
       t.timestamps
