@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131105150041) do
+ActiveRecord::Schema.define(version: 20131106150125) do
 
   create_table "app_runtime_histories", force: true do |t|
     t.integer  "app_id"
@@ -34,22 +34,48 @@ ActiveRecord::Schema.define(version: 20131105150041) do
   end
 
   create_table "comments", force: true do |t|
-    t.string   "title",            limit: 50, default: ""
+    t.integer  "post_id"
     t.text     "comment"
-    t.integer  "commentable_id"
-    t.string   "commentable_type"
+    t.boolean  "enabled"
+    t.boolean  "blocked"
+    t.integer  "warning"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id"
-  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type"
+  add_index "comments", ["post_id"], name: "index_comments_on_post_id"
   add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+
+  create_table "events", force: true do |t|
+    t.integer  "app_id"
+    t.string   "content"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer  "priority"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["app_id"], name: "index_events_on_app_id"
+
+  create_table "game_rankings", force: true do |t|
+    t.integer  "app_id"
+    t.string   "type"
+    t.integer  "ranking"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "game_rankings", ["app_id"], name: "index_game_rankings_on_app_id"
 
   create_table "posts", force: true do |t|
     t.integer  "app_id"
+    t.string   "type"
     t.text     "content"
+    t.boolean  "enabled"
+    t.boolean  "blocked"
+    t.integer  "warning"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -60,7 +86,7 @@ ActiveRecord::Schema.define(version: 20131105150041) do
 
   create_table "ratings", force: true do |t|
     t.integer  "app_id"
-    t.float    "starts"
+    t.float    "stars"
     t.text     "comment"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -69,6 +95,18 @@ ActiveRecord::Schema.define(version: 20131105150041) do
 
   add_index "ratings", ["app_id"], name: "index_ratings_on_app_id"
   add_index "ratings", ["user_id"], name: "index_ratings_on_user_id"
+
+  create_table "user_game_rankings", force: true do |t|
+    t.integer  "app_id"
+    t.integer  "user_id"
+    t.string   "ranking"
+    t.integer  "points"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_game_rankings", ["app_id"], name: "index_user_game_rankings_on_app_id"
+  add_index "user_game_rankings", ["user_id"], name: "index_user_game_rankings_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "name",                                  null: false
@@ -85,6 +123,9 @@ ActiveRecord::Schema.define(version: 20131105150041) do
     t.string   "authentication_token",   default: "",   null: false
     t.string   "uuid",                   default: "",   null: false
     t.string   "phone",                  default: "",   null: false
+    t.string   "ranking"
+    t.integer  "points"
+    t.integer  "cash",                   default: 0,    null: false
     t.boolean  "sex"
     t.date     "birthday"
     t.string   "city",                                  null: false

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  app_id: 
+  user_id: 
+  ranking: MyString
+  points: 1
+
+two:
+  app_id: 
+  user_id: 
+  ranking: MyString
+  points: 1
