@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131103075020) do
+ActiveRecord::Schema.define(version: 20131105091824) do
 
   create_table "apps", force: true do |t|
     t.string   "name"
@@ -31,9 +31,17 @@ ActiveRecord::Schema.define(version: 20131103075020) do
     t.datetime "updated_at"
   end
 
-  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id"
-  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type"
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "friendships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "friend_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "posts", force: true do |t|
     t.integer  "app_id"
@@ -43,30 +51,30 @@ ActiveRecord::Schema.define(version: 20131103075020) do
     t.datetime "updated_at"
   end
 
-  add_index "posts", ["app_id"], name: "index_posts_on_app_id"
-  add_index "posts", ["user_id"], name: "index_posts_on_user_id"
+  add_index "posts", ["app_id"], name: "index_posts_on_app_id", using: :btree
+  add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name",                                  null: false
+    t.string   "name",                                null: false
     t.string   "email"
     t.string   "encrypted_password"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,    null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "authentication_token",   default: "",   null: false
-    t.string   "uuid",                   default: "",   null: false
-    t.string   "phone",                  default: "",   null: false
+    t.string   "authentication_token",   default: "", null: false
+    t.string   "uuid",                   default: "", null: false
+    t.string   "phone",                  default: "", null: false
     t.boolean  "sex"
     t.date     "birthday"
-    t.string   "city",                                  null: false
-    t.string   "intro",                                 null: false
-    t.string   "sns",                                   null: false
-    t.text     "setting",                default: "{}", null: false
+    t.string   "city",                                null: false
+    t.string   "intro",                               null: false
+    t.string   "sns",                                 null: false
+    t.text     "setting",                             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "avatar_file_name"
@@ -75,9 +83,9 @@ ActiveRecord::Schema.define(version: 20131103075020) do
     t.datetime "avatar_updated_at"
   end
 
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["name"], name: "index_users_on_name", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

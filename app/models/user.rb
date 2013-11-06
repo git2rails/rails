@@ -9,6 +9,16 @@ class User < ActiveRecord::Base
   serialize :setting, JSON
   serialize :sns, JSON
 
+  # 정방향 친구관계를 위한 relation  
+  has_many :friendships
+  has_many :friends, :through=> :friendships
+  accepts_nested_attributes_for :friends
+  
+  # 역방향 친구관계를 위한 relation
+  has_many :inverse_friendships, :class_name=> "Friendship", :foreign_key=> "friend_id"
+  has_many :inverse_friends, :through=> :inverse_friendships, :source=> :user
+  accepts_nested_attributes_for :inverse_friends
+
   validates_uniqueness_of    :name,     :case_sensitive => false, :allow_blank => false, :if => :name_changed?
   validates_length_of :name, :within => 2..10, :allow_blank => false
   validates_uniqueness_of    :email,    :case_sensitive => false, :allow_blank => true, :if => :email_changed?

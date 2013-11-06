@@ -1,12 +1,19 @@
 RailsServer::Application.routes.draw do
+  
   devise_for :users
+  
   namespace :api do
     devise_scope :user do
-      post "users/sign_up", to: "users/registrations#create"
-      post "users/sign_in", to: "users/sessions#create"
+      get "users/sign_up", to: "users/registrations#create"
+      get "users/sign_in", to: "users/sessions#create"
+      get "users/show", to: "users/users#show"
     end
-    post "profile/update"
     
+    get "friends/suggest"
+    get "friends/accept"
+    get "friends/get"
+    get "friends/block"    
+    post "profile/update"
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
