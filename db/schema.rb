@@ -38,7 +38,8 @@ ActiveRecord::Schema.define(version: 20131105091824) do
   create_table "friendships", force: true do |t|
     t.integer  "user_id"
     t.integer  "friend_id"
-    t.string   "status"
+    t.string   "user_status"
+    t.string   "friend_status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -71,10 +72,10 @@ ActiveRecord::Schema.define(version: 20131105091824) do
     t.string   "phone",                  default: "", null: false
     t.boolean  "sex"
     t.date     "birthday"
-    t.string   "city",                                null: false
-    t.string   "intro",                               null: false
-    t.string   "sns",                                 null: false
-    t.text     "setting",                             null: false
+    t.string   "city",                   default: ""
+    t.string   "intro",                  default: ""
+    t.string   "sns",                    default: "", null: false
+    t.text     "setting"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "avatar_file_name"
