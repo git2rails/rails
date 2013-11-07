@@ -39,10 +39,10 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.integer    :cash, :null =>false, :default => 0
       t.boolean    :sex, :null=>true
       t.date       :birthday, :null=>true
-      t.string     :city, :null=>false, :defalut => ""
-      t.string     :intro, :null=>false, :defalut => ""
-      t.string     :sns, :null=>false, :defalut => "{}"
-      t.text       :setting, :null=>false, :default => "{}"
+      t.string     :city, :null=>true
+      t.string     :intro, :null=>true
+      t.string     :sns, :null=>true
+      t.text       :setting, :null=>true
 
 
       t.timestamps
