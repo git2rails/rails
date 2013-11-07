@@ -15,7 +15,10 @@ class Api::ApiController < ActionController::Base
       sign_in user, store: false
     end
   end
-  
+ 
+  def to_json(code, msg, body)
+    return {header: {code: code, msg: msg}, body: body} 
+
   def render_to_json
     render :json=> {
       :header=> {
