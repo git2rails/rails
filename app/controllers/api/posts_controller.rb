@@ -1,36 +1,70 @@
 class Api::PostController < Api::ApiController
 
+  rescue_from ActiveRecord::RecordNotFound do
+    respond_to do |format|
+      format.json { render :nothing => true, :status => 200 }
+    end
+  end
+
   def create
     post = Post.new(post_params)
     post.user_id = current_user.id
     if post.save
-      render :json=> {:success=>true}
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
     else 
-      render :json=> post.errors, :status=>422
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
     end 
   end
 
   def update
-    post = Post.find(params[:id])
-    if post.update(post_params)
-      render :json=> {:success=>true}
+    find_post
+    raise(ActiveRecord::RecordNotFound.new) unless @post
+    if @post.update(post_params)
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
     else 
-      render :json=> post.errors, :status=>422
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
     end 
   end
 
-  def create_comment
-    post = Post.find(params[:post_id])
-    post.comments.create(:comment => params[:comment])
-    if post.comments.create(:comment => params[:comment])
-      render :json=> {:success=>true}
+  def destroy
+    find_current_user_post
+    raise(ActiveRecord::RecordNotFound.new) unless @post
+    if @post.user_id != currnet_user.id
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
+    @post.enabled = false
+    if @post.save
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
     else 
-      render :json=> post.comments.errors, :status=>422
+      respond_to do |format|
+        format.json { render :nothing => true, :status => 200 }
+      end
     end 
+  end
+
 
   private
     def post_params
       params.require(:post).permit(:app_id, :contents)
+    end
+    
+    def find_post(id)
+      @post = Post.find_by_id_and_visible_and_enabled(id, true, true)
+    end
+
+    def find_current_user_post(id)
+      @post = current_user.posts.find(id)
     end
 
 
