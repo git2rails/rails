@@ -34,6 +34,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string 	   :authentication_token, :null =>false, :default => ""
       t.string 	   :uuid, :null =>false, :default => ""
       t.string 	   :phone, :null =>false, :default => ""
+      t.string     :ranking
+      t.integer    :points
+      t.integer    :cash, :null =>false, :default => 0
       t.boolean    :sex, :null=>true
       t.date       :birthday, :null=>true
       t.string     :city, :null=>true

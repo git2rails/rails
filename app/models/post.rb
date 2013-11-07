@@ -1,4 +1,5 @@
 class Post < ActiveRecord::Base
-  acts_as_commentable
+  has_many :comment
   belongs_to :user
+  belongs_to :app
 end

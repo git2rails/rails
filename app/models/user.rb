@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   serialize :setting, JSON
   serialize :sns, JSON
+  has_many :posts
+  has_many :ratings
+  has_many :app_runtime_histories
 
   # 정방향 친구관계를 위한 relation  
   has_many :friendships

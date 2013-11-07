@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  app_id: 
+  type: 
+  runtime: 1
+  user_id: 
+
+two:
+  app_id: 
+  type: 
+  runtime: 1
+  user_id: 

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  app_id: 
+  content: MyString
+  start_at: 2013-11-07 00:01:25
+  end_at: 2013-11-07 00:01:25
+  priority: 1
+
+two:
+  app_id: 
+  content: MyString
+  start_at: 2013-11-07 00:01:25
+  end_at: 2013-11-07 00:01:25
+  priority: 1
