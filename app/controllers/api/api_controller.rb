@@ -18,6 +18,7 @@ class Api::ApiController < ActionController::Base
  
   def to_json(code, msg, body)
     return {header: {code: code, msg: msg}, body: body} 
+  end
 
   def render_to_json
     render :json=> {

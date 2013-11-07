@@ -1,4 +1,4 @@
-class Api::PostController < Api::ApiController
+class Api::PostsController < Api::ApiController
 
   rescue_from ActiveRecord::RecordNotFound do
     respond_to do |format|
@@ -11,11 +11,11 @@ class Api::PostController < Api::ApiController
     post.user_id = current_user.id
     if post.save
       respond_to do |format|
-        format.json { render :nothing => true, :status => 200 }
+        format.json { render json: to_json(200, "OK", @post.to_json), status: 200 }
       end
     else 
       respond_to do |format|
-        format.json { render :nothing => true, :status => 200 }
+        format.json { render json: to_json(400, @post.errors, @post.to_json), status: 200 }
       end
     end 
   end
@@ -41,6 +41,7 @@ class Api::PostController < Api::ApiController
       respond_to do |format|
         format.json { render :nothing => true, :status => 200 }
       end
+    end
     @post.enabled = false
     if @post.save
       respond_to do |format|
@@ -56,7 +57,7 @@ class Api::PostController < Api::ApiController
 
   private
     def post_params
-      params.require(:post).permit(:app_id, :contents)
+      params.require(:post).permit(:app_id, :content)
     end
     
     def find_post(id)
@@ -66,6 +67,4 @@ class Api::PostController < Api::ApiController
     def find_current_user_post(id)
       @post = current_user.posts.find(id)
     end
-
-
 end

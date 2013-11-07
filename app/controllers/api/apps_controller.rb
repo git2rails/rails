@@ -1,4 +1,4 @@
-class Api::AppController < Api::ApiController
+class Api::AppsController < Api::ApiController
   before_action :set_app, only: [:show]
 
   def index

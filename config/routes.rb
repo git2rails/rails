@@ -14,6 +14,7 @@ RailsServer::Application.routes.draw do
     get "friends/get"
     get "friends/block"    
     post "profile/update"
+    post "posts/create"
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
