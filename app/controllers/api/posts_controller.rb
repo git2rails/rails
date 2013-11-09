@@ -7,7 +7,7 @@ class Api::PostsController < Api::ApiController
   end
 
   def index
-    @posts = Post.all
+    @posts = Post.where(app_id: params[:app_id], visible:true, enabled:true).paginate(page: params[:page], per_page: 5).order('id DESC')
     respond_to do |format|
       format.json { render json: to_json(200, "OK", @posts.to_json), status: 200 }
     end
@@ -31,7 +31,7 @@ class Api::PostsController < Api::ApiController
   end
 
   def update
-    find_post
+    find_current_user_post
     raise(ActiveRecord::RecordNotFound.new) unless @post
     if @post.update(post_params)
       respond_to do |format|
