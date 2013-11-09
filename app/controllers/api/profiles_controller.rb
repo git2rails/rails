@@ -30,7 +30,8 @@ class Api::ProfilesController < Api::ApiController
       render :json=> {:success=>true}
     else 
       render :json=> current_user.errors, :status=>422
-    end 
+    end
+  end 
 
   private
     def user_params

@@ -7,7 +7,7 @@ gem 'rails', '4.0.0'
 gem 'mysql2'
 
 gem 'devise'
-#gem 'acts_as_commentable'
+gem 'acts_as_commentable'
 gem 'paperclip'
 gem 'will_paginate', '~> 3.0'
 

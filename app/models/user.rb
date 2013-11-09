@@ -21,6 +21,9 @@ class User < ActiveRecord::Base
   has_many :inverse_friendships, :class_name=> "Friendship", :foreign_key=> "friend_id"
   has_many :inverse_friends, :through=> :inverse_friendships, :source=> :user
   accepts_nested_attributes_for :inverse_friends
+  
+  # 주고 받은 메시지를 위한 relation
+  has_many :messages
 
   validates_uniqueness_of    :name,     :case_sensitive => false, :allow_blank => false, :if => :name_changed?
   validates_length_of :name, :within => 2..10, :allow_blank => false

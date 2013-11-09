@@ -26,12 +26,12 @@ class Api::PostController < Api::ApiController
       render :json=> {:success=>true}
     else 
       render :json=> post.comments.errors, :status=>422
-    end 
+    end
+  end
 
   private
     def post_params
       params.require(:post).permit(:app_id, :contents)
     end
-
 
 end
