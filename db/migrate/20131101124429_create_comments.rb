@@ -3,8 +3,8 @@ class CreateComments < ActiveRecord::Migration
     create_table :comments do |t|
       t.references :post
       t.text :comment
+      t.boolean :visible
       t.boolean :enabled
-      t.boolean :blocked
       t.integer :warning
       t.references :user
       t.timestamps

@@ -4,8 +4,8 @@ class CreatePosts < ActiveRecord::Migration
       t.references :app, index: true
       t.string :type
       t.text :content
+      t.boolean :visible
       t.boolean :enabled
-      t.boolean :blocked
       t.integer :warning
       t.references :user, index: true
 

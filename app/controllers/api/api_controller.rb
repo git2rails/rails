@@ -1,6 +1,9 @@
 class Api::ApiController < ActionController::Base
-  respond_to :json
+
   before_action :authenticate_user_from_token!
+  
+  # This is Devise's authentication
+  before_filter :authenticate_user!
  
   private
   
@@ -15,7 +18,11 @@ class Api::ApiController < ActionController::Base
       sign_in user, store: false
     end
   end
-  
+ 
+  def to_json(code, msg, body)
+    return {header: {code: code, msg: msg}, body: body} 
+  end
+
   def render_to_json
     render :json=> {
       :header=> {

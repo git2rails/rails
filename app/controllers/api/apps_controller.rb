@@ -1,8 +1,11 @@
-class Api::AppController < Api::ApiController
+class Api::AppsController < Api::ApiController
   before_action :set_app, only: [:show]
 
   def index
-    apps = App.paginate(:page => params[:page]).order('created_at DESC')
+    @apps = App.paginate(:page => params[:page]).order('created_at DESC')
+    respond_to do |format|
+      format.json { render json: to_json(200, "OK", @apps.to_json), status: 200 }
+    end
   end
 
   def show
