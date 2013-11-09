@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131106150125) do
+ActiveRecord::Schema.define(version: 20131108084322) do
 
   create_table "app_runtime_histories", force: true do |t|
     t.integer  "app_id"
@@ -78,13 +78,25 @@ ActiveRecord::Schema.define(version: 20131106150125) do
 
   add_index "game_rankings", ["app_id"], name: "index_game_rankings_on_app_id", using: :btree
 
+  create_table "messages", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "opponent_id"
+    t.string   "text"
+    t.boolean  "sent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["opponent_id"], name: "index_messages_on_opponent_id", using: :btree
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", unique: true, using: :btree
+
   create_table "posts", force: true do |t|
     t.integer  "app_id"
     t.string   "type"
     t.text     "content"
-    t.boolean  "visible"
-    t.boolean  "enabled"
-    t.integer  "warning"
+    t.boolean  "visible",    default: true, null: false
+    t.boolean  "enabled",    default: true, null: false
+    t.integer  "warning",    default: 0,    null: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
