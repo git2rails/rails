@@ -1,6 +1,9 @@
 class Api::ApiController < ActionController::Base
-  respond_to :json
+
   before_action :authenticate_user_from_token!
+  
+  # This is Devise's authentication
+  before_filter :authenticate_user!
  
   private
   

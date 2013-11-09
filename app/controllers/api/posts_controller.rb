@@ -6,6 +6,16 @@ class Api::PostsController < Api::ApiController
     end
   end
 
+  def index
+    @posts = Post.all
+    respond_to do |format|
+      format.json { render json: to_json(200, "OK", @posts.to_json), status: 200 }
+    end
+  end
+
+  def show
+  end
+
   def create
     post = Post.new(post_params)
     post.user_id = current_user.id
