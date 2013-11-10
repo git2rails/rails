@@ -5,6 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
+  id: 1
   name: kiggle
   authentication_token: X_dzjTmZsx-EMhmCubu6
   uuid: abcdefgh

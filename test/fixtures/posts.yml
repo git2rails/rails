@@ -1,9 +1,23 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  content: "dddd" 
-  user_id: 
+  id: 1
+  app_id: 1
+  content: "내용 1번입니다." 
+  user_id: 1 
 
 two:
-  content: "sample"
-  user_id: 
+  app_id: 1
+  content: "내용 2번입니다."
+  user_id: 1
+
+three:
+  app_id: 2
+  content: "내용 3번입니다."
+  user_id: 1
+
+
+three:
+  app_id: 2
+  content: "내용 4번입니다."
+  user_id: 1

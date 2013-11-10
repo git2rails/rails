@@ -18,6 +18,19 @@ RailsServer::Application.routes.draw do
     get "posts/index"
     get "apps/index"
     post "messages/send"
+    resources :apps do 
+      get "posts/index"
+      post "posts/update"
+      post "posts/destroy"
+      get "ratings/index"
+      post "ratings/update"
+      post "ratings/destroy"
+    end
+    resources :posts do 
+      get "comments/index"
+      post "comments/update"
+      post "comments/destroy"
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  post_id: 1
+  comment: "comment 1번입니다." 
+  user_id: 1 
+
+two:
+  post_id: 1
+  comment: "coment 2번입니다."
+  user_id: 1
+
+three:
+  post_id: 2
+  comment: "comment 3번입니다."
+  user_id: 1
+
+
+three:
+  post_id: 2
+  comment: "comment 4번입니다."
+  user_id: 1
