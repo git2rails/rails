@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20131108084322) do
   create_table "comments", force: true do |t|
     t.integer  "post_id"
     t.text     "comment"
+    t.boolean  "visible"
     t.boolean  "enabled"
-    t.boolean  "blocked"
     t.integer  "warning"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20131108084322) do
     t.integer  "opponent_id"
     t.string   "text"
     t.boolean  "sent"
+    t.boolean  "enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -94,9 +95,9 @@ ActiveRecord::Schema.define(version: 20131108084322) do
     t.integer  "app_id"
     t.string   "type"
     t.text     "content"
-    t.boolean  "enabled"
-    t.boolean  "blocked"
-    t.integer  "warning"
+    t.boolean  "visible",    default: true, null: false
+    t.boolean  "enabled",    default: true, null: false
+    t.integer  "warning",    default: 0,    null: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

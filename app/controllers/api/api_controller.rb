@@ -10,12 +10,12 @@ class Api::ApiController < ActionController::Base
   def authenticate_user_from_token!
     authentication_token = request.headers["x-auth-token"].presence
     user = authentication_token && User.find_by_authentication_token(authentication_token)
- 
     # Notice how we use Devise.secure_compare to compare the token
     # in the database with the token given in the params, mitigating
     # timing attacks.
     if user && Devise.secure_compare(user.authentication_token, request.headers["x-auth-token"])
       sign_in user, store: false
+      #sign_in user, store: false
     end
   end
  

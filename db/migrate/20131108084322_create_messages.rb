@@ -5,6 +5,7 @@ class CreateMessages < ActiveRecord::Migration
       t.integer :opponent_id
       t.string :text
       t.boolean :sent
+      t.boolean :enabled
 
       t.timestamps
     end

@@ -1,50 +1,73 @@
-class Api::MessagesController < ApplicationController
+class Api::MessagesController < Api::ApiController
   
-  def send
-    recipient_id = params[:recipient_id]
-    text = params[:text]
-    
-    msg_of_sender = Message.new(:user_id=> current_user.id, :opponent_id=> recipient_id, :text=> text, :sent=> true)
-    
-    if !msg_of_sender.save
-      @code = "error"
-      @msg = "failed saving message of sender"
-      @body = {} 
-      render_to_json
-      return  
-    end
-    
-    msg_of_recipient = Message.new(:user_id=> recipient_id, :opponent_id=> current_user.id, :text=> text, :sent=> false)
-    if !msg_of_recipient.save
-        @code = "error"
-        @msg = "failed saving message of recipient"
-        @body = {}
-        render_to_json
+  def create
+    ActiveRecord::Base.transaction do
+      args = message_params
+      args[:user_id] = current_user.id
+      args[:sent] = true
+      args[:enabled] = true
+      
+      msg_of_sender = Message.new(args)
+      if !msg_of_sender.save
+        respond_to do |format|
+          format.json { render json: to_json(400, "failed saving message of sender", {}), status: 200 }
+        end
+        return  
+      end
+      
+      args[:user_id] = args[:opponent_id]
+      args[:opponent_id] = current_user.id
+      args[:sent] = false
+      
+      msg_of_recipient = Message.new(args)
+      if !msg_of_recipient.save
+        respond_to do |format|
+          format.json { render json: to_json(400, "failed saving message of recipient", {}), status: 200}
+        end
         return
-    end      
-    
-    @code = "ok"
-    @msg = ""
-    @body = {}
-    render_to_json
+      end      
+      
+      respond_to do |format|
+        format.json { render json: to_json(200, "",{}), status: 200 }
+      end
+    end
   end
   
-  def delete
-    msg = current_user.message.find_by_id(:id=> params[:id])
-    if msg.presence
-      msg.delete
-      @code = "ok"
-    else
-      @code = "error"
-      @msg = "message doesn't exsit"      
+  def destroy
+    message = current_user.messages.find_by(message_params)
+    raise(ActiveRecord::RecordNotFound.new) unless message
+
+    if current_user.id != message.user_id
+      respond_to do |format|
+        format.json { render json: to_json(400, "", {}), status: 200 } 
+      end 
+      return
     end
     
-    render_to_json
+    message.enabled = false
+    if message.update(message_params)
+      respond_to do |format|
+        format.json { render json: to_json(200, "", {}), status: 200 }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: to_json(400, "", {}), status: 200 }
+      end
+    end
   end
   
-  def get_opponents
-    opponent_ids = current_user.message.group(:opponent_id)
-    puts opponent_ids
+  def get_messages
+    page = params[:page].to_i.to
+        
+    messages = current_user.messages.order(create_at: :desc).limit(10).offset((page-1)*10)
+    respond_to do |format|
+      format.json { render json: to_json(200, "", messages), status: 200}
+    end
   end
+  
+  private
+    def message_params
+      params.require(:message).permit(:id, :user_id, :opponent_id, :text, :sent, :enabled)
+    end
   
 end
