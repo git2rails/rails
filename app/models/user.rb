@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   serialize :setting, JSON
   serialize :sns, JSON
   has_many :posts
+  has_many :comments
   has_many :ratings
   has_many :app_runtime_histories
 

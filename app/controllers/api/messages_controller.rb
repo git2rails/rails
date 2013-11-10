@@ -39,7 +39,7 @@ class Api::MessagesController < Api::ApiController
 
     if current_user.id != message.user_id
       respond_to do |format|
-        format.json { render json: to_json(400, "", {}), status: 200 } 
+        format.json { render json: to_json(ResultCode::ERROR, "", {}), status: 200 } 
       end 
       return
     end
@@ -47,11 +47,11 @@ class Api::MessagesController < Api::ApiController
     message.enabled = false
     if message.update(message_params)
       respond_to do |format|
-        format.json { render json: to_json(200, "", {}), status: 200 }
+        format.json { render json: to_json(ResultCode::SUCCESS, "", {}), status: 200 }
       end
     else
       respond_to do |format|
-        format.json { render json: to_json(400, "", {}), status: 200 }
+        format.json { render json: to_json(ResultCode::SUCCESS, "", {}), status: 200 }
       end
     end
   end

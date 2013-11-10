@@ -1,6 +1,6 @@
-class CreateUserGameRankings < ActiveRecord::Migration
+class CreateUserAppRankings < ActiveRecord::Migration
   def change
-    create_table :user_game_rankings do |t|
+    create_table :user_app_rankings do |t|
       t.references :app, index: true
       t.references :user, index: true
       t.string :ranking
