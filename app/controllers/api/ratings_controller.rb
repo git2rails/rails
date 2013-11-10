@@ -7,9 +7,11 @@ class Api::RatingsController < Api::ApiController
   end
 
   def index
-    @ratings = Rating.active.where(app_id: params[:app_id]).paginate(page: params[:page], per_page: 20).order('id DESC')
+    @page = params[:page] || 1
+    @per_page = params[:per_page] || 20
+    @ratings = Rating.active.where(app_id: params[:app_id]).paginate(page: @page, per_page: @per_page).order('id DESC')
     respond_to do |format|
-      format.json { render json: to_json(200, "OK", {ratings: @ratings.to_json(:include => { :user => { :only => :name } })}), status: 200 }
+      format.json { render json: to_json(ResultCode::SUCCESS, "OK", {ratings: @ratings.to_json(:include => { :user => { :only => :name } })}), status: 200 }
     end
   end
 
@@ -19,7 +21,7 @@ class Api::RatingsController < Api::ApiController
     @rating.user_id = current_user.id
     if @rating.save
       respond_to do |format|
-        format.json { render json: to_json(200, "OK", @rating.to_json), status: 200 }
+        format.json { render json: to_json(ResultCode::SUCCESS, "OK", @rating.to_json), status: 200 }
       end
     else 
       respond_to do |format|
@@ -28,9 +30,30 @@ class Api::RatingsController < Api::ApiController
     end 
   end
 
+  def show
+    find_current_user_rating(params[:id])
+    if !@rating 
+      @rating = Rating.new()
+    end 
+    respond_to do |format|
+      format.json { render json: to_json(ResultCode::SUCCESS, "OK", @rating.to_json), :status => 200 }
+    end
+    
+
   def update
-    find_current_user_rating
-    raise(ActiveRecord::RecordNotFound.new) unless @rating
+    find_current_user_rating(params[:id])
+    if !@rating 
+       @rating = Rating.new(rating_params)
+       @rating.user_id = current_user.id
+       if @rating.save
+          respond_to do |format|
+          format.json { render json: to_json(ResultCode::SUCCESS, "OK", @rating.to_json), status: 200 }
+       else 
+          respond_to do |format|
+          format.json { render json: to_json(400, @rating.errors, @rating.to_json), status: 200 }
+       end
+    end
+    
     if @rating.update(rating_params)
       respond_to do |format|
         format.json { render :nothing => true, :status => 200 }
@@ -43,7 +66,7 @@ class Api::RatingsController < Api::ApiController
   end
 
   def destroy
-    find_current_user_rating
+    find_current_user_rating(parmas[:id])
     raise(ActiveRecord::RecordNotFound.new) unless @rating
     @rating.enabled = false
     if @rating.save

@@ -4,6 +4,14 @@ class Api::ApiController < ActionController::Base
   
   # This is Devise's authentication
   before_filter :authenticate_user!
+
+
+  class ResultCode
+    SUCCESS       = 0
+    ERROR         = 400
+    INVALID_MODEL = 401
+    INVALID_MODEL = 401
+  end
  
   private
   
