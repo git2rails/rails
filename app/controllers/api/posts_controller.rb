@@ -17,9 +17,9 @@ class Api::PostsController < Api::ApiController
   end
 
   def create
-    post = Post.new(post_params)
-    post.user_id = current_user.id
-    if post.save
+    @post = Post.new(post_params)
+    @post.user_id = current_user.id
+    if @post.save
       respond_to do |format|
         format.json { render json: to_json(200, "OK", @post.to_json), status: 200 }
       end
@@ -47,11 +47,6 @@ class Api::PostsController < Api::ApiController
   def destroy
     find_current_user_post
     raise(ActiveRecord::RecordNotFound.new) unless @post
-    if @post.user_id != currnet_user.id
-      respond_to do |format|
-        format.json { render :nothing => true, :status => 200 }
-      end
-    end
     @post.enabled = false
     if @post.save
       respond_to do |format|
