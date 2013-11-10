@@ -17,6 +17,7 @@ RailsServer::Application.routes.draw do
     post "posts/create"
     get "posts/index"
     get "apps/index"
+    post "messages/send"
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
