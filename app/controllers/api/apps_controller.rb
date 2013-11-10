@@ -4,7 +4,7 @@ class Api::AppsController < Api::ApiController
   def index
     @apps = App.paginate(page: params[:page], per_page: 5).order('created_at DESC')
     respond_to do |format|
-      format.json { render json: to_json(200, "OK", @apps.to_json), status: 200 }
+      format.json { render json: to_json(200, "OK", {apps: @apps.to_json}), status: 200 }
     end
   end
 

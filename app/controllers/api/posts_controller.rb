@@ -7,9 +7,9 @@ class Api::PostsController < Api::ApiController
   end
 
   def index
-    @posts = Post.where(app_id: params[:app_id], visible:true, enabled:true).paginate(page: params[:page], per_page: 5).order('id DESC')
+    @posts = Post.active.where(app_id: params[:app_id]).paginate(page: params[:page], per_page: 20).order('id DESC')
     respond_to do |format|
-      format.json { render json: to_json(200, "OK", @posts.to_json), status: 200 }
+      format.json { render json: to_json(200, "OK", {posts: @posts.to_json(:include => { :user => { :only => :name }, :comments =>{ :only => :comment} })}), status: 200 }
     end
   end
 
@@ -62,7 +62,7 @@ class Api::PostsController < Api::ApiController
 
   private
     def post_params
-      params.require(:post).permit(:app_id, :content)
+      params.require(:post).permit(:app_id, :type, :content)
     end
     
     def find_post(id)
