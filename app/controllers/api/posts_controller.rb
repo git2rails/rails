@@ -15,7 +15,12 @@ class Api::PostsController < Api::ApiController
     end
   end
 
-  def show
+
+  def new
+   @post = Post.new()
+   respond_to do |format|
+     format.json { render json: to_json(ResultCode::SUCCESS, "OK", @post.to_json), status: 200 }
+   end
   end
 
   def create
@@ -30,6 +35,13 @@ class Api::PostsController < Api::ApiController
         format.json { render json: to_json(ResultCode::INVALID_MODEL, @post.errors, @post.to_json), status: 200 }
       end
     end 
+  end
+
+  def edit
+    find_current_user_post(parmas[:id])
+    respond_to do |format|
+      format.json { render json: to_json(ResultCode::SUCCESS, "OK", @post.to_json), status: 200 }
+    end
   end
 
   def update

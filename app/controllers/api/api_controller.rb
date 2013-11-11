@@ -10,7 +10,7 @@ class Api::ApiController < ActionController::Base
     SUCCESS       = 0
     ERROR         = 400
     INVALID_MODEL = 401
-    INVALID_MODEL = 401
+    INVALID_PARAM = 401
   end
  
   private
