@@ -10,7 +10,7 @@ class Api::MessagesController < Api::ApiController
       msg_of_sender = Message.new(args)
       if !msg_of_sender.save
         respond_to do |format|
-          format.json { render json: to_json(400, "failed saving message of sender", {}), status: 200 }
+          format.json { render json: to_json(ResultCode::ERROR, "failed saving message of sender", {}), status: 200 }
         end
         return  
       end
@@ -22,13 +22,13 @@ class Api::MessagesController < Api::ApiController
       msg_of_recipient = Message.new(args)
       if !msg_of_recipient.save
         respond_to do |format|
-          format.json { render json: to_json(400, "failed saving message of recipient", {}), status: 200}
+          format.json { render json: to_json(ResultCode::ERROR, "failed saving message of recipient", {}), status: 200}
         end
         return
       end      
       
       respond_to do |format|
-        format.json { render json: to_json(200, "",{}), status: 200 }
+        format.json { render json: to_json(ResultCode::SUCCESS, "",{}), status: 200 }
       end
     end
   end
@@ -61,7 +61,7 @@ class Api::MessagesController < Api::ApiController
         
     messages = current_user.messages.order(create_at: :desc).limit(10).offset((page-1)*10)
     respond_to do |format|
-      format.json { render json: to_json(200, "", messages), status: 200}
+      format.json { render json: to_json(ResultCode::SUCCESS, "", messages), status: 200}
     end
   end
   

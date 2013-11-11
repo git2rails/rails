@@ -8,7 +8,7 @@ class Api::MessagesControllerTest < ActionController::TestCase
     post :create, message: {opponent_id: 2, text: "test message"}, format: :json
     
     assert_response 200
-    assert JSON.parse(response.body)["header"]["code"].to_i == 200
+    assert JSON.parse(response.body)["header"]["code"] == Api::ApiController::ResultCode::SUCCESS
     assert Message.find_by_opponent_id(2)
   end
   
@@ -18,6 +18,6 @@ class Api::MessagesControllerTest < ActionController::TestCase
     post :destroy, message: {id: Message.all[0].id}, format: :json
     
     assert_response 200
-    assert JSON.parse(response.body)["header"]["code"].to_i == 200
+    assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS
   end
 end

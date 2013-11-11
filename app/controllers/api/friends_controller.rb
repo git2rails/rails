@@ -1,104 +1,102 @@
 class Api::FriendsController < Api::ApiController
  
   def suggest
+    friendships = friendship_params[:friendships]
+    
     succeed_friend_ids = []
     failed_friend_ids = []
     
-    params[:f].each do |f|
+    friendships.each do |friendship|
+      friendship[:user_id] = current_user.id
       
-      if Friendship.find_by(:user_id=> current_user.id, :friend_id=> f[:friend_id]).presence
-        failed_friend_ids.push f[:friend_id].to_i  
+      if Friendship.find_by(friendship).presence
+        failed_friend_ids.push friendship[:friend_id].to_i  
       end
       
-      friendship = Friendship.new(:user_id=> current_user.id, :friend_id=> f[:friend_id], :user_status=> 2, :friend_status=> 1 )
-      if friendship.save
-        succeed_friend_ids.push f[:friend_id].to_i
+      new_friendship = Friendship.new(friendship)
+      new_friendship.user_status = 2
+      new_friendship.friend_status = 1
+      
+      if new_friendship.save
+        succeed_friend_ids.push friendship[:friend_id].to_i
       else
-        failed_friend_ids.push f[:friend_id].to_i
+        failed_friend_ids.push friendship[:friend_id].to_i
       end
-      
     end
     
-    if succeed_friend_ids.count == params[:f].count
-      @code = "ok"
-      @msg = ""
-      @body = {}
+    if succeed_friend_ids.count == friendships.count
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::SUCCESS, '', succeed_friend_ids), status: 200 }
+        
+      end
     else
-      @code = "error"
-      @msg = ""
-      @body = {
-        :failed_friend_ids=> failed_friend_ids
-      }
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::ERROR, '', failed_friend_ids), status: 200}
+      end
     end
-    
-    render_to_json
   end
   
   def accept
     
-    succeed_friend_ids = []
-    failed_friend_ids = []
+    ids = params[:ids].split(",")
     
-    params[:f].each do |f|
-      friendship = Friendship.find_by(:user_id=> current_user.id, :friend_id=> f[:friend_id])
+    succeed_ids = []
+    failed_ids = []
+    
+    ids.each do |id|
+      friendship = Friendship.find_by_id_and_friend_id(id, current_user.id)
        
       unless friendship.presence
-        failed_friend_ids.push f[:friend_id].to_i
+        failed_ids.push id
         next
       end
       
-      if friendship.update(:friend_status => 2)
-        succeed_friend_ids.push f[:friend_id].to_i
+      if friendship.update(friend_status: 2)
+        succeed_ids.push id
       else
-        failed_friend_ids.push f[:friend_id].to_i
+        failed_ids.push id
       end
     end
     
 
-    if succeed_friend_ids.count == params[:f].count
-      @code = "ok"
-      @msg = ""
-      @body = {}
+    if succeed_ids.count == ids.count
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::SUCCESS, '', {}), status: 200}
+      end
     else
-      @code = "error"
-      @msg = ""
-      @body = {
-        :failed_friend_ids=> failed_friend_ids
-      }
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::ERROR, '', failed_ids), status: 200}
+      end      
     end
-    render_to_json
   end
   
   def block
-    friendship = current_user.friendships.find_by(:friend_id=> params[:friend_id]).first
+    friendship = current_user.friendships.find_by_id(params[:id]).first
     
     if friendship.presence
       friendship.user_status = 3
       friendship.save
       
-      @code = "ok"
-      @msg = ""
-      @body = {}
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::SUCCESS, '', {}), status: 200}
+      end
       
-      render_to_json
       return
     end
     
-    inverse_friendship = current_user.inverse_friendships.find_by(:user_id=> params[:friend_id]).first
+    inverse_friendship = current_user.inverse_friendships.find_by_id(params[:id]).first
     
     if inverse_friendship.presence
       inverse_friendship.friend_status = 3
       inverse_friendship.save
-      
-      @code = "ok"
-      @msg = ""
-      @body = {}
-      
-      render_to_json
+
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::SUCCESS, '', {}), status: 200}
+      end      
     else
-      @code = "error"
-      @msg = ""
-      @body = {}      
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::ERROR, '', {}), status: 200}
+      end            
     end
   end
   
@@ -106,12 +104,13 @@ class Api::FriendsController < Api::ApiController
     friends = current_user.friends
     friends.concat(current_user.inverse_friends)
  
-    @code = "ok"
-    @msg = ""
-    @body = {
-      :friends=> friends
-    }
-    render_to_json
-  end  
-
+    respond_to do |format|
+      format.json { render json: to_json(ResultCode::ERROR, '', friends), status: 200}
+    end             
+  end
+  
+  private
+    def friendship_params
+      params.permit(friendships: [:user_id, :friend_id, :user_status, :friend_status])
+    end
 end
