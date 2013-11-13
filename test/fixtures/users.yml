@@ -5,14 +5,19 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  id: 1
-  name: kiggle
+  name: user1
   authentication_token: X_dzjTmZsx-EMhmCubu6
   uuid: abcdefgh
   phone: 01012341234
   
 two:
-  name: kiggle2
+  name: user2
   authentication_token: UXztQVWYKshfoT_x64F_
   uuid: zbcdefgh
   phone: 01056785678
+  
+three:
+  name: user3
+  authentication_token: YXztQVWYKshfoT_x64F_
+  uuid: efgghiii
+  phone: 01000110022 

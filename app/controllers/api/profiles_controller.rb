@@ -1,35 +1,45 @@
 class Api::ProfilesController < Api::ApiController
 
-  wrap_parameters User
-
   def update
     if current_user.update(user_params)
-      render :json=> {:success=>true}
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::SUCCESS, "", {}), status: 200 }
+      end
     else 
-      render :json=> current_user.errors, :status=>422
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::ERROR, "", current_user.errors), status: 200 }
+      end
     end 
   end
 
   def update_avatar
     current_user.avatar = params[:file]
     if current_user.save
-      render :json => { :success=>true, 
-        :avatar_url => {
-          :original => current_user.avatar.url,
-          :medium   => current_user.avatar.url(:medium),
-          :thumb    => current_user.avatar.url(:thumb)
-        }
-      }
+        respond_to do |format|
+          format.json { render json: to_json(ResultCode::SUCCESS, "",
+            avartar_url = {
+              :original => current_user.avatar.url,
+              :medium   => current_user.avatar.url(:medium),
+              :thumb    => current_user.avatar.url(:thumb)              
+            }), status: 200
+          }        
+        end
     else
-      render :json=> current_user.errors, :status=>422
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::ERROR, "", current_user.errors), status: 200 }
+      end      
     end
   end
 
   def update_email_password
     if current_user.update(user_email_password_params)
-      render :json=> {:success=>true}
-    else 
-      render :json=> current_user.errors, :status=>422
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::SUCCESS, "", {}), status: 200 }
+      end      
+    else
+      respond_to do |format|
+        format.json { render json: to_json(ResultCode::ERROR, "", current_user.errors), status: 200 }
+      end      
     end
   end 
 

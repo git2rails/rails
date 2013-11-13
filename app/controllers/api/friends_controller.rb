@@ -43,8 +43,11 @@ class Api::FriendsController < Api::ApiController
     succeed_ids = []
     failed_ids = []
     
+    puts current_user.to_json
+    
     ids.each do |id|
-      friendship = Friendship.find_by_id_and_friend_id(id, current_user.id)
+      friendship = Friendship.find_by id: id, friend_id: 2
+      puts friendship.to_json
        
       unless friendship.presence
         failed_ids.push id
