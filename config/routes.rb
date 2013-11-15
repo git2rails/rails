@@ -14,7 +14,9 @@ RailsServer::Application.routes.draw do
     post "friends/block"
     get "friends/show"
         
-    post "profile/update"
+    post "profiles/update"
+    post "profiles/update_avatar"
+    post "profiles/update_email_password"
     
     post "posts/create"
     get "posts/index"

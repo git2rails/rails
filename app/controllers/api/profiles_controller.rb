@@ -5,7 +5,7 @@ class Api::ProfilesController < Api::ApiController
       respond_to do |format|
         format.json { render json: to_json(ResultCode::SUCCESS, "", {}), status: 200 }
       end
-    else 
+    else
       respond_to do |format|
         format.json { render json: to_json(ResultCode::ERROR, "", current_user.errors), status: 200 }
       end
@@ -22,7 +22,7 @@ class Api::ProfilesController < Api::ApiController
               :medium   => current_user.avatar.url(:medium),
               :thumb    => current_user.avatar.url(:thumb)              
             }), status: 200
-          }        
+          }
         end
     else
       respond_to do |format|
@@ -45,10 +45,10 @@ class Api::ProfilesController < Api::ApiController
 
   private
     def user_params
-      params.require(:user).permit(:sex, :birthday, :intro, :city, :sns, :setting)
+      params.require(:user).permit(:sex, :birthday, :intro, :city, { sns: [:kakao, :line] }, :setting)
     end
 
-    def user_email_pasword_params
+    def user_email_password_params
       params.require(:user).permit(:email, :password)
     end
 

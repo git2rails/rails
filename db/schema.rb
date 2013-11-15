@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 20131108084322) do
     t.date     "birthday"
     t.string   "city"
     t.string   "intro"
-    t.string   "sns"
+    t.text     "sns"
     t.text     "setting"
     t.datetime "created_at"
     t.datetime "updated_at"

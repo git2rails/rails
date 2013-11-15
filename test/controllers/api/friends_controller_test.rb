@@ -7,7 +7,7 @@ class Api::FriendsControllerTest < ActionController::TestCase
     @request.headers["x-auth-token"] = users(:user1).authentication_token
     post :suggest, friendships: [{friend_id: users(:user3).id}], format: :json
     
-    assert_response 200
+    assert_response 200, response.body
     assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS, response.body.to_json
   end    
     
