@@ -3,32 +3,40 @@ require 'test_helper'
 class Api::FriendsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
   
-  test "shoud suggest and accept friendship" do
-    user1 = User.find_by name: 'user1'
-    user2 = User.find_by name: 'user2'
-    user3 = User.find_by name: 'user3'
-    
-    @request.headers["x-auth-token"] = user1.authentication_token
-    get :suggest, friendships: [{friend_id: user2.id}, {friend_id: user3.id}], format: :json
+  test "shoud suggest friendship" do
+    @request.headers["x-auth-token"] = users(:user1).authentication_token
+    post :suggest, friendships: [{friend_id: users(:user3).id}], format: :json
     
     assert_response 200
-    assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS
+    assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS, response.body.to_json
+  end    
     
-    sign_out user1
-    
-    ids = []
-    Friendship.find_by friend_id: user2.id do |friendship|
-      ids.push friendship.id
-    end
-    
-    @request.headers["x-auth-token"] = user2.authentication_token
-    get :accept, ids: ids.join(","), format: :json
+  test "shoud accept friendship" do    
+    @request.headers["x-auth-token"] = users(:user2).authentication_token
+    post :accept, ids: [friendships(:user1_to_user2).id].join(","), format: :json
     
     assert_response 200
-    assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS
+    assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS, response.body.to_json
     
-    friendship = user2.inverse_friendships.find_by_user_id(user1.id)
-    assert friendship.friend_status = 2
+    #friendship = users(:user2).inverse_friendships.find_by_user_id(users(:user1).id)
+    #assert friendship.friend_status = 2
+  end
+  
+  test "should block friendship" do    
+    @request.headers["x-auth-token"] = users(:user1).authentication_token
+    post :block, id: friendships(:user1_to_user2).id, format: :json
+    
+    assert_response 200
+    assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS, response.body.to_json
+  end
+  
+  test "should show friendship" do
+    @request.headers["x-auth-token"] = users(:user1).authentication_token
+    get :show, format: :json
+    
+    assert_response 200
+    body = JSON.parse(response.body)
+    assert body.count == 2
   end
   
 end

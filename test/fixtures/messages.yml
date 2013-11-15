@@ -1,0 +1,41 @@
+msg1:
+  user: user1
+  opponent: user2
+  sent: true
+  text: text of msg1
+  enabled: true
+  
+msg2:
+  user: user2
+  opponent: user1
+  sent: false
+  text: text of msg2
+  enabled: true
+  
+msg3:
+  user: user2
+  opponent: user3  
+  sent: true
+  text: text of msg3
+  enabled: true
+  
+msg4:
+  user: user3
+  opponent: user2  
+  sent: false
+  text: text of msg4
+  enabled: true
+  
+msg5:
+  user: user3
+  opponent: user1  
+  sent: true
+  text: text of msg5
+  enabled: true
+  
+msg6:
+  user: user1
+  opponent: user3  
+  sent: false
+  text: text of msg6
+  enabled: true

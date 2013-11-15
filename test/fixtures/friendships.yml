@@ -1,2 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
+user1_to_user2:
+  user: user1
+  friend: user2
+  user_status: 2
+  friend_status: 1 
+  
+user2_to_user3:
+  user: user2
+  friend: user3
+  user_status: 2
+  friend_status: 2

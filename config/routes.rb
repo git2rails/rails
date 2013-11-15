@@ -9,17 +9,20 @@ RailsServer::Application.routes.draw do
       get "users/show", to: "users/users#show"
     end
     
-    get "friends/suggest"
-    get "friends/accept"
-    get "friends/get"
-    get "friends/block"    
+    post "friends/suggest"
+    post "friends/accept"
+    post "friends/block"
+    get "friends/show"
+        
     post "profile/update"
+    
     post "posts/create"
     get "posts/index"
+    
     get "apps/index"
+    
     post "messages/create"
     post "messages/destroy"    
-    post "messages/send"
     
     resources :apps do 
       get "posts/index"

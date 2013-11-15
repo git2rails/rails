@@ -4,19 +4,19 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
+user1:
   name: user1
   authentication_token: X_dzjTmZsx-EMhmCubu6
   uuid: abcdefgh
   phone: 01012341234
-  
-two:
+      
+user2:
   name: user2
   authentication_token: UXztQVWYKshfoT_x64F_
   uuid: zbcdefgh
   phone: 01056785678
   
-three:
+user3:
   name: user3
   authentication_token: YXztQVWYKshfoT_x64F_
   uuid: efgghiii

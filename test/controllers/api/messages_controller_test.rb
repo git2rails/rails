@@ -4,18 +4,16 @@ class Api::MessagesControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   test "should create message" do
-    @request.headers["x-auth-token"] = "UXztQVWYKshfoT_x64F_"
-    post :create, message: {opponent_id: 2, text: "test message"}, format: :json
+    @request.headers["x-auth-token"] = users(:user1).authentication_token
+    post :create, message: {opponent_id: users(:user2).id, text: "test message"}, format: :json
     
     assert_response 200
     assert JSON.parse(response.body)["header"]["code"] == Api::ApiController::ResultCode::SUCCESS
-    assert Message.find_by_opponent_id(2)
   end
   
   test "should destroy message" do
-    @request.headers["x-auth-token"] = "UXztQVWYKshfoT_x64F_"
-    post :create, message: {opponent_id: 2, text: "test message"}, format: :json
-    post :destroy, message: {id: Message.all[0].id}, format: :json
+    @request.headers["x-auth-token"] = users(:user1).authentication_token
+    post :destroy, message: {id: messages(:msg1)}, format: :json
     
     assert_response 200
     assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS

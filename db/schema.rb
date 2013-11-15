@@ -13,6 +13,16 @@
 
 ActiveRecord::Schema.define(version: 20131108084322) do
 
+  create_table "app_rankings", force: true do |t|
+    t.integer  "app_id"
+    t.string   "type"
+    t.integer  "ranking"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "app_rankings", ["app_id"], name: "index_app_rankings_on_app_id", using: :btree
+
   create_table "app_runtime_histories", force: true do |t|
     t.integer  "app_id"
     t.string   "type"
@@ -68,16 +78,6 @@ ActiveRecord::Schema.define(version: 20131108084322) do
     t.datetime "updated_at"
   end
 
-  create_table "game_rankings", force: true do |t|
-    t.integer  "app_id"
-    t.string   "type"
-    t.integer  "ranking"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "game_rankings", ["app_id"], name: "index_game_rankings_on_app_id", using: :btree
-
   create_table "messages", force: true do |t|
     t.integer  "user_id"
     t.integer  "opponent_id"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20131108084322) do
   end
 
   add_index "messages", ["opponent_id"], name: "index_messages_on_opponent_id", using: :btree
-  add_index "messages", ["user_id"], name: "index_messages_on_user_id", unique: true, using: :btree
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
 
   create_table "posts", force: true do |t|
     t.integer  "app_id"
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20131108084322) do
   add_index "ratings", ["app_id"], name: "index_ratings_on_app_id", using: :btree
   add_index "ratings", ["user_id"], name: "index_ratings_on_user_id", using: :btree
 
-  create_table "user_game_rankings", force: true do |t|
+  create_table "user_app_rankings", force: true do |t|
     t.integer  "app_id"
     t.integer  "user_id"
     t.string   "ranking"
@@ -127,8 +127,8 @@ ActiveRecord::Schema.define(version: 20131108084322) do
     t.datetime "updated_at"
   end
 
-  add_index "user_game_rankings", ["app_id"], name: "index_user_game_rankings_on_app_id", using: :btree
-  add_index "user_game_rankings", ["user_id"], name: "index_user_game_rankings_on_user_id", using: :btree
+  add_index "user_app_rankings", ["app_id"], name: "index_user_app_rankings_on_app_id", using: :btree
+  add_index "user_app_rankings", ["user_id"], name: "index_user_app_rankings_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name",                                null: false
