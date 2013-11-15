@@ -5,7 +5,7 @@ class Api::FriendsControllerTest < ActionController::TestCase
   
   test "shoud suggest friendship" do
     @request.headers["x-auth-token"] = users(:user1).authentication_token
-    post :suggest, friendships: [{friend_id: users(:user3).id}], format: :json
+    post :suggest, friend_ids: [users(:user3).id], format: :json
     
     assert_response 200, response.body
     assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS, response.body.to_json
@@ -13,7 +13,7 @@ class Api::FriendsControllerTest < ActionController::TestCase
     
   test "shoud accept friendship" do    
     @request.headers["x-auth-token"] = users(:user2).authentication_token
-    post :accept, ids: [friendships(:user1_to_user2).id].join(","), format: :json
+    post :accept, ids: [friendships(:user1_to_user2).id], format: :json
     
     assert_response 200
     assert JSON.parse(response.body)["header"]["code"].to_i == Api::ApiController::ResultCode::SUCCESS, response.body.to_json

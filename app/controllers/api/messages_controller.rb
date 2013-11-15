@@ -57,9 +57,10 @@ class Api::MessagesController < Api::ApiController
   end
   
   def show
-    page = params[:page].to_i.to
+    page = params[:page].to_i
+    size = params[:size].to_i
         
-    messages = current_user.messages.order(create_at: :desc).limit(10).offset((page-1)*10)
+    messages = current_user.messages.order(created_at: :desc).limit(size).offset((page-1)*size)
     respond_to do |format|
       format.json { render json: to_json(ResultCode::SUCCESS, "", messages), status: 200}
     end

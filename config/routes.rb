@@ -24,7 +24,8 @@ RailsServer::Application.routes.draw do
     get "apps/index"
     
     post "messages/create"
-    post "messages/destroy"    
+    post "messages/destroy"
+    get "messages/show"   
     
     resources :apps do 
       get "posts/index"

@@ -1,32 +1,29 @@
 class Api::FriendsController < Api::ApiController
  
   def suggest
-    friendships = friendship_params[:friendships]
+    friend_ids = params[:friend_ids]
     
     succeed_friend_ids = []
     failed_friend_ids = []
 
-    friendships.each do |friendship|
-      friendship[:user_id] = current_user.id
+    friend_ids.each do |friend_id|
+      friendship = Friendship.find_by user_id: current_user.id, friend_id: friend_id
       
-      if Friendship.find_by(friendship).presence
-        failed_friend_ids.push friendship[:friend_id].to_i  
+      if friendship.presence
+        failed_friend_ids.push friendship.friend_id
       end
+
+      friendship = Friendship.new(user_id: current_user.id, friend_id: friend_id, user_status: 2, friend_status: 1)      
       
-      new_friendship = Friendship.new(friendship)
-      new_friendship.user_status = 2
-      new_friendship.friend_status = 1
-      
-      if new_friendship.save
-        succeed_friend_ids.push friendship[:friend_id].to_i
+      if friendship.save
+        succeed_friend_ids.push friendship.friend_id.to_i
       else
-        puts new_friendship.to_json
-        puts new_friendship.errors.to_json
-        failed_friend_ids.push friendship[:friend_id].to_i
+        puts friendship.errors.as_json
+        failed_friend_ids.push friendship.friend_id.to_i
       end
     end
     
-    if succeed_friend_ids.count == friendships.count
+    if succeed_friend_ids.count == friend_ids.count
       respond_to do |format|
         format.json { render json: to_json(ResultCode::SUCCESS, '', succeed_friend_ids), status: 200 }
         
@@ -39,7 +36,7 @@ class Api::FriendsController < Api::ApiController
   end
   
   def accept
-    ids = params[:ids].split(",")
+    ids = params[:ids]
     
     succeed_ids = []
     failed_ids = []

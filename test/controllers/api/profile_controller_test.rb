@@ -24,6 +24,8 @@ class Api::ProfilesControllerTest < ActionController::TestCase
     image = fixture_file_upload "files/tom.jpg"
     post :update_avatar, file: image, format: :json
     
+    puts response.body
+    
     assert_response 200, response.body
   end
   
